@@ -19,9 +19,8 @@ const TodoItem = ({ todoInfo }: { todoInfo: DataTypes }) => {
   const completeHandler = () =>
     todoCtx.completedTodo(todoInfo.id, !todoInfo.isCompleted, todoInfo.todo);
 
-  const editHandler = () => {
-    setEditMode(true);
-  };
+  const editHandler = () => setEditMode(true);
+  const cancelEditHandler = () => setEditMode(false);
 
   const closeEditMode = () => {
     setEditMode(false);
@@ -49,7 +48,8 @@ const TodoItem = ({ todoInfo }: { todoInfo: DataTypes }) => {
       <ButtonWrapper>
         {!editMode && <Button onClick={editHandler}>수정</Button>}
         {editMode && <Button onClick={closeEditMode}>완료</Button>}
-        <Button onClick={deleteHandler}>X</Button>
+        {!editMode && <Button onClick={deleteHandler}>X</Button>}
+        {editMode && <Button onClick={cancelEditHandler}>취소</Button>}
       </ButtonWrapper>
     </TodoItemWrapper>
   );
