@@ -2,7 +2,7 @@ export interface RequestTypes {
   url: string;
   method?: string;
   headers?: HeadersInit;
-  body?: { email: string; password: string };
+  body?: { email?: string; password?: string };
 }
 
 export interface TokenTypes {
