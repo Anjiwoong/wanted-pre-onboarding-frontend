@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import GlobalStyle from './style/global-style';
 
-function App() {
+import TodoPage from './pages/Todo';
+import AuthPage from './pages/Auth';
+
+const App = () => {
+  const isLoggedIn = () => localStorage.getItem('token');
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <GlobalStyle />
+      <Routes>
+        {/* <Route
+          path="/"
+          element={
+            isLoggedIn() ? <Navigate to="/todo" replace /> : <AuthPage />
+          }
+        />
+        <Route
+          path="/todo"
+          element={
+            localStorage.getItem('token') ? (
+              <TodoPage />
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        /> */}
+        <Route path="/" element={<AuthPage />} />
+        <Route path="/todo" element={<TodoPage />} />
+      </Routes>
+    </>
   );
-}
+};
 
 export default App;
