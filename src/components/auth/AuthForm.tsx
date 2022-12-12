@@ -1,38 +1,29 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useHttp from '../../hooks/use-http';
 
-import { AuthFormTypes } from '../../types/auth-types';
+import { AuthFormTypes, AuthValidTypes } from '../../types/auth-types';
 import { TokenTypes } from '../../types/http-types';
 
 import Button from '../UI/Button';
-import Input from '../UI/Input';
+import AuthEmail from './AuthEmail';
+import AuthPassword from './AuthPassword';
 
 const AuthForm = ({ loginPage, setLoginPage }: AuthFormTypes) => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [isValid, setIsValid] = useState<boolean>(false);
+  const [isValid, setIsValid] = useState<AuthValidTypes>({
+    email: false,
+    password: false,
+  });
+  const [formIsValid, setFormIsValid] = useState<boolean>(false);
+
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  const passwordInputRef = useRef<HTMLInputElement>(null);
 
   const navigate = useNavigate();
   const sendRequest = useHttp();
 
-  useEffect(() => {
-    if (email.includes('@') && password.length >= 8) setIsValid(true);
-    else setIsValid(false);
-  }, [email, password]);
-
-  const switchLoginHandler = () => {
-    setLoginPage(false);
-    setEmail('');
-    setPassword('');
-  };
-
-  const emailChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
-    setEmail(e.target.value);
-
-  const passwordChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
-    setPassword(e.target.value);
+  const switchLoginHandler = () => setLoginPage(false);
 
   const successHandler = (data: TokenTypes) => {
     if (loginPage) {
@@ -42,10 +33,13 @@ const AuthForm = ({ loginPage, setLoginPage }: AuthFormTypes) => {
       alert('회원가입 되었습니다.');
       setLoginPage(true);
     }
-
-    setEmail('');
-    setPassword('');
   };
+
+  useEffect(() => {
+    const isValidForm = Object.values(isValid).every(valid => valid === true);
+
+    setFormIsValid(isValidForm);
+  }, [isValid]);
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -58,8 +52,8 @@ const AuthForm = ({ loginPage, setLoginPage }: AuthFormTypes) => {
           'Content-Type': 'application/json',
         },
         body: {
-          email: email,
-          password: password,
+          email: emailInputRef.current?.value,
+          password: passwordInputRef.current?.value,
         },
       },
       successHandler,
@@ -69,28 +63,18 @@ const AuthForm = ({ loginPage, setLoginPage }: AuthFormTypes) => {
   return (
     <>
       <FormWrapper onSubmit={submitHandler}>
-        <InputWrapper>
-          <label htmlFor="email">이메일</label>
-          <Input
-            type="email"
-            placeholder="이메일 형식을 지켜주세요."
-            id="email"
-            onChange={emailChangeHandler}
-            value={email}
-          />
-        </InputWrapper>
-        <InputWrapper>
-          <label htmlFor="password">비밀번호</label>
-          <Input
-            type="password"
-            placeholder="비민번호는 8자리 이상이어야 합니다."
-            id="password"
-            value={password}
-            onChange={passwordChangeHandler}
-          />
-        </InputWrapper>
+        <AuthEmail
+          emailRef={emailInputRef}
+          setIsValid={setIsValid}
+          loginPage={loginPage}
+        />
+        <AuthPassword
+          passwordRef={passwordInputRef}
+          setIsValid={setIsValid}
+          loginPage={loginPage}
+        />
         <ButtonWrapper>
-          <LoginButton disabled={!isValid}>
+          <LoginButton disabled={!formIsValid}>
             {loginPage ? '로그인' : '가입완료'}
           </LoginButton>
         </ButtonWrapper>
@@ -108,24 +92,6 @@ const FormWrapper = styled.form`
   font-size: 20px;
 `;
 
-const InputWrapper = styled.div`
-  width: 500px;
-  margin: 40px auto;
-  text-align: center;
-
-  label {
-    display: inline-block;
-    width: 100px;
-    margin-right: 10px;
-  }
-
-  input {
-    width: 300px;
-    height: 50px;
-    padding: 10px;
-  }
-`;
-
 const ButtonWrapper = styled.div`
   width: 300px;
   margin: 0 auto;
@@ -135,7 +101,6 @@ const ButtonWrapper = styled.div`
     font-size: 20px;
     height: 70px;
     border-radius: 5px;
-    border: none;
   }
 `;
 
@@ -150,6 +115,5 @@ const SignupButton = styled(Button)`
   height: 70px;
   border-radius: 5px;
   background-color: beige;
-  border: none;
 `;
 export default AuthForm;

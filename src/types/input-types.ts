@@ -1,9 +1,10 @@
 import { ChangeEvent } from 'react';
 
 export interface InputTypes {
-  type: 'email' | 'password' | 'text';
-  placeholder: string;
-  id: string;
-  value: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  type: string;
+  placeholder?: string;
+  id?: string;
+  value?: string;
+  defaultValue?: string;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
