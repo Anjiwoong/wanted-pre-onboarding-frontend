@@ -1,12 +1,9 @@
 import { useCallback } from 'react';
-import { RequestTypes, TokenTypes } from '../types/http-types';
+import { RequestTypes } from '../types/http-types';
 
 const useHttp = () => {
   const sendRequest = useCallback(
-    async (
-      requestConfig: RequestTypes,
-      applyData: (data: TokenTypes) => void,
-    ) => {
+    async (requestConfig: RequestTypes, applyData: (data: any) => void) => {
       try {
         const response = await fetch(
           `${process.env.REACT_APP_PRE_ONBORDING}${requestConfig.url}`,
@@ -24,6 +21,7 @@ const useHttp = () => {
         }
 
         const data = await response.json();
+
         applyData(data);
       } catch (error: unknown) {
         console.log(error);

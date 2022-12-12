@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { AuthInputTypes } from '../../types/auth-types';
 import Input from '../UI/Input';
 
-const AuthEmail = ({ emailRef, setIsValid }: AuthInputTypes) => {
+const AuthEmail = ({ emailRef, setIsValid, loginPage }: AuthInputTypes) => {
   const [email, setEmail] = useState<string>('');
   const [emailIsValid, setEmailIsValid] = useState<boolean>(false);
 
@@ -19,6 +19,8 @@ const AuthEmail = ({ emailRef, setIsValid }: AuthInputTypes) => {
     if (emailIsValid) setIsValid(prev => ({ ...prev, email: true }));
     else setIsValid(prev => ({ ...prev, email: false }));
   }, [emailIsValid]);
+
+  useEffect(() => setEmail(''), [loginPage]);
 
   return (
     <InputWrapper>

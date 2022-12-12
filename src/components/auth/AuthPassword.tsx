@@ -3,7 +3,11 @@ import styled from 'styled-components';
 import { AuthInputTypes } from '../../types/auth-types';
 import Input from '../UI/Input';
 
-const AuthPassword = ({ passwordRef, setIsValid }: AuthInputTypes) => {
+const AuthPassword = ({
+  passwordRef,
+  setIsValid,
+  loginPage,
+}: AuthInputTypes) => {
   const [password, setPassword] = useState<string>('');
   const [passwordIsValid, setPasswordIsValid] = useState<boolean>(false);
 
@@ -20,6 +24,8 @@ const AuthPassword = ({ passwordRef, setIsValid }: AuthInputTypes) => {
     else setIsValid(prev => ({ ...prev, password: false }));
   }, [passwordIsValid]);
 
+  useEffect(() => setPassword(''), [loginPage]);
+
   return (
     <InputWrapper>
       <label htmlFor="password">password</label>
@@ -27,8 +33,8 @@ const AuthPassword = ({ passwordRef, setIsValid }: AuthInputTypes) => {
         type="password"
         placeholder="이메일 형식을 지켜주세요."
         id="password"
-        onChange={changePasswordHandler}
         value={password}
+        onChange={changePasswordHandler}
         ref={passwordRef}
       />
     </InputWrapper>

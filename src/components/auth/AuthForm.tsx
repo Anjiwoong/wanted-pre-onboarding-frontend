@@ -63,8 +63,16 @@ const AuthForm = ({ loginPage, setLoginPage }: AuthFormTypes) => {
   return (
     <>
       <FormWrapper onSubmit={submitHandler}>
-        <AuthEmail emailRef={emailInputRef} setIsValid={setIsValid} />
-        <AuthPassword passwordRef={passwordInputRef} setIsValid={setIsValid} />
+        <AuthEmail
+          emailRef={emailInputRef}
+          setIsValid={setIsValid}
+          loginPage={loginPage}
+        />
+        <AuthPassword
+          passwordRef={passwordInputRef}
+          setIsValid={setIsValid}
+          loginPage={loginPage}
+        />
         <ButtonWrapper>
           <LoginButton disabled={!formIsValid}>
             {loginPage ? '로그인' : '가입완료'}
@@ -93,7 +101,6 @@ const ButtonWrapper = styled.div`
     font-size: 20px;
     height: 70px;
     border-radius: 5px;
-    border: none;
   }
 `;
 
@@ -108,6 +115,5 @@ const SignupButton = styled(Button)`
   height: 70px;
   border-radius: 5px;
   background-color: beige;
-  border: none;
 `;
 export default AuthForm;

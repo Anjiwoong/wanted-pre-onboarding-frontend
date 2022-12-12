@@ -11,7 +11,7 @@ const App = () => {
     <>
       <GlobalStyle />
       <Routes>
-        <Route
+        {/* <Route
           path="/"
           element={
             isLoggedIn() ? <Navigate to="/todo" replace /> : <AuthPage />
@@ -19,8 +19,16 @@ const App = () => {
         />
         <Route
           path="/todo"
-          element={isLoggedIn() ? <TodoPage /> : <Navigate to="/" replace />}
-        />
+          element={
+            localStorage.getItem('token') ? (
+              <TodoPage />
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        /> */}
+        <Route path="/" element={<AuthPage />} />
+        <Route path="/todo" element={<TodoPage />} />
       </Routes>
     </>
   );

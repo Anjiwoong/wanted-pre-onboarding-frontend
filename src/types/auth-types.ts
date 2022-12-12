@@ -12,7 +12,7 @@ export interface AuthFormTypes extends AuthTitleTypes {
   setLoginPage: (state: boolean) => void;
 }
 
-export interface AuthInputTypes {
+export interface AuthInputTypes extends AuthTitleTypes {
   emailRef?: Ref<HTMLInputElement>;
   passwordRef?: Ref<HTMLInputElement>;
   setIsValid: Dispatch<SetStateAction<AuthValidTypes>>;

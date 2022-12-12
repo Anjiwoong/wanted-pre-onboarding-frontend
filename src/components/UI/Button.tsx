@@ -10,6 +10,7 @@ const ButtonUI = styled.button`
   -moz-appearance: none;
   appearance: none;
   cursor: pointer;
+  border: none;
 
   &:disabled {
     cursor: not-allowed;
