@@ -20,6 +20,8 @@ const useHttp = () => {
           throw new Error('api error');
         }
 
+        if (requestConfig.method === 'DELETE') return;
+
         const data = await response.json();
 
         applyData(data);
