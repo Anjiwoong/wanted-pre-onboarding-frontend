@@ -31,7 +31,7 @@ const AuthPassword = ({
       <label htmlFor="password">password</label>
       <Input
         type="password"
-        placeholder="이메일 형식을 지켜주세요."
+        placeholder="비밀번호는 8자리 이상입니다."
         id="password"
         value={password}
         onChange={changePasswordHandler}
